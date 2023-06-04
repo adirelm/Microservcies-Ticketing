@@ -45,7 +45,7 @@ it('returns a 400 when purchasing a cancelled order', async () => {
     userId,
     version: 0,
     price: 20,
-    status: OrderStatus.Canceled,
+    status: OrderStatus.Cancelled,
   });
   await order.save();
 

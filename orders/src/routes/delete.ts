@@ -27,7 +27,7 @@ router.delete(
       throw new NotAuthorizedError();
     }
 
-    order.status = OrderStatus.Canceled;
+    order.status = OrderStatus.Cancelled;
     await order.save();
 
     // publishing an event saying this was cancelled!

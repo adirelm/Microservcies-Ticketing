@@ -10,6 +10,8 @@ import {
 } from '@aetickets1/common';
 import { Order } from '../src/models/order';
 import express, { Request, Response } from 'express';
+import { natsWrapper } from '../src/nats/nats-wrapper';
+import { PaymentCreatedPublisher } from '../src/events/publishers/payment-created-publisher';
 
 import { Payment } from '../src/models/payment';
 
@@ -33,7 +35,7 @@ router.post(
       throw new NotAuthorizedError();
     }
 
-    if (order.status === OrderStatus.Canceled) {
+    if (order.status === OrderStatus.Cancelled) {
       throw new BadRequestError('Cannot pay for an cancelled order');
     }
 
@@ -49,7 +51,13 @@ router.post(
     });
     await payment.save();
 
-    res.status(201).send({ success: true });
+    new PaymentCreatedPublisher(natsWrapper.client).publish({
+      id: payment.id,
+      orderId: payment.orderId,
+      stripeId: payment.stripeId,
+    });
+
+    res.status(201).send({ id: payment.id });
   }
 );
 
