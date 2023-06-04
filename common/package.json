@@ -1,6 +1,6 @@
 {
   "name": "@aetickets1/common",
-  "version": "1.0.29",
+  "version": "1.0.30",
   "description": "",
   "main": "./build/index.js",
   "types": "./build/index.d.ts",
@@ -8,7 +8,7 @@
     "build/**/*"
   ],
   "scripts": {
-    "clean": "del ./build/*",
+    "clean": "rmdir ./build/*",
     "build": "npm run clean && tsc",
     "pub": "git add . && git commit -m \"Updates\" && npm version patch && npm run build && npm publish"
   },
