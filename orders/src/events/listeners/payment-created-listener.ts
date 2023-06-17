@@ -7,8 +7,7 @@ import {
   OrderStatus,
 } from '@aetickets1/common';
 
-import { Order } from '../../../../payments/src/models/order';
-
+import { Order } from '../../models/order';
 export class PaymentCreatedListener extends Listener<PaymentCreatedEvent> {
   subject: Subjects.PaymentCreated = Subjects.PaymentCreated;
   queueGroupName: string = queueGropName;
@@ -23,6 +22,7 @@ export class PaymentCreatedListener extends Listener<PaymentCreatedEvent> {
     order.set({
       status: OrderStatus.Complete,
     });
+    await order.save();
 
     msg.ack();
   }
